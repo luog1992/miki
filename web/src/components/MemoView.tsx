@@ -11,7 +11,7 @@ import { useTranslate } from "@/utils/i18n";
 import { convertVisibilityToString } from "@/utils/memo";
 import showChangeMemoCreatedTsDialog from "./ChangeMemoCreatedTsDialog";
 import Icon from "./Icon";
-import MemoActionMenu from "./MemoActionMenu";
+import MemoActionMenu from "./Memo/MemoActionMenu";
 import MemoContent from "./MemoContent";
 import MemoReactionistView from "./MemoReactionListView";
 import MemoRelationListView from "./MemoRelationListView";

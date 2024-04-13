@@ -4,10 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Empty from "@/components/Empty";
 import { HomeSidebar, HomeSidebarDrawer } from "@/components/HomeSidebar";
 import Icon from "@/components/Icon";
+import MemoListView from "@/components/Memo/MemoListView";
+import MemoTableView from "@/components/Memo/MemoTableView";
 import MemoEditor from "@/components/MemoEditor";
 import showMemoEditorDialog from "@/components/MemoEditor/MemoEditorDialog";
 import MemoFilter from "@/components/MemoFilter";
-import MemoView from "@/components/MemoView";
 import MobileHeader from "@/components/MobileHeader";
 import { DEFAULT_LIST_MEMOS_PAGE_SIZE } from "@/helpers/consts";
 import { getTimeStampByDate } from "@/helpers/datetime";
@@ -24,6 +25,7 @@ const Home = () => {
   const user = useCurrentUser();
   const memoStore = useMemoStore();
   const memoList = useMemoList();
+  const [memoListLayout, setMemoListLayout] = useState("default");
   const [isRequesting, setIsRequesting] = useState(true);
   const nextPageTokenRef = useRef<string | undefined>(undefined);
   const { tag: tagQuery, text: textQuery } = useFilterWithUrlParams();
@@ -79,10 +81,8 @@ const Home = () => {
         <div className={classNames(md ? "w-[calc(100%-15rem)]" : "w-full")}>
           <MemoEditor className="mb-2" cacheKey="home-memo-editor" onEditPrevious={handleEditPrevious} />
           <div className="flex flex-col justify-start items-start w-full max-w-full">
-            <MemoFilter className="px-2 pb-2" />
-            {sortedMemos.map((memo) => (
-              <MemoView key={`${memo.name}-${memo.updateTime}`} memo={memo} showVisibility showPinned />
-            ))}
+            <MemoFilter setMemoListLayout={setMemoListLayout} className="px-2 pb-2" />
+            {memoListLayout === "table" ? <MemoTableView memoList={sortedMemos} /> : <MemoListView memoList={sortedMemos} />}
             {isRequesting ? (
               <div className="flex flex-row justify-center items-center w-full my-4 text-gray-400">
                 <Icon.Loader className="w-4 h-auto animate-spin mr-1" />

@@ -1,27 +1,31 @@
+import * as modJoy from "@mui/joy";
 import classNames from "classnames";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import useCurrentUser from "@/hooks/useCurrentUser";
 import { useFilterStore } from "@/store/module";
-import { useTranslate } from "@/utils/i18n";
 import Icon from "./Icon";
 
 interface Props {
   className?: string;
+  setMemoListLayout?: any;
 }
 
 const MemoFilter = (props: Props) => {
-  const t = useTranslate();
+  // const t = useTranslate();
+  const user = useCurrentUser();
   const location = useLocation();
   const filterStore = useFilterStore();
   const filter = filterStore.state;
   const { tag: tagQuery, text: textQuery, visibility } = filter;
   const showFilter = Boolean(tagQuery || textQuery || visibility);
+  const showSetMemoListLayout = Boolean(props.setMemoListLayout && user);
 
   useEffect(() => {
     filterStore.clearFilter();
   }, [location]);
 
-  if (!showFilter) {
+  if (!showFilter && !showSetMemoListLayout) {
     return null;
   }
 
@@ -33,8 +37,29 @@ const MemoFilter = (props: Props) => {
       )}
     >
       <div className="shrink-0 flex flex-row justify-start items-center text-gray-400">
-        <Icon.Filter className="w-4 h-auto mr-1" />
-        <span>{t("common.filter")}:</span>
+        {user && props.setMemoListLayout && (
+          <modJoy.IconButton
+            variant="plain"
+            size="sm"
+            onClick={() => {
+              props.setMemoListLayout("default");
+            }}
+          >
+            <Icon.Layers2 className="w-4 h-auto mr-1" />
+          </modJoy.IconButton>
+        )}
+        {user && props.setMemoListLayout && (
+          <modJoy.IconButton
+            size="sm"
+            onClick={() => {
+              props.setMemoListLayout("table");
+            }}
+          >
+            <Icon.Table2 className="w-4 h-auto mr-1" />
+          </modJoy.IconButton>
+        )}
+        {/* <span>{t("common.filter")}:</span> */}
+        {/* {showFilter ? <Icon.Filter className="w-4 h-auto mr-1" /> : <></>} */}
       </div>
       <div
         className={

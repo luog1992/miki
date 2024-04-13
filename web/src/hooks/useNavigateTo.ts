@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const useNavigateTo = () => {
+export const useNavigateTo = () => {
   const navigateTo = useNavigate();
 
   const navigateToWithViewTransition = (to: string) => {

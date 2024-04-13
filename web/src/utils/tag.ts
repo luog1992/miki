@@ -1,6 +1,7 @@
 import { Node, TagNode } from "@/types/node";
 
 export const TAG_REG = /#([^\s#,]+)/;
+export const TAG_REG1 = /#[^\s#,]+/g;
 
 // extractTagsFromContent extracts tags from content.
 export const extractTagsFromContent = (content: string) => {
